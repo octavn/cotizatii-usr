@@ -232,6 +232,20 @@ if (isset($_GET["email"])){
 		h1, h2, h3 {
 			color:#ed1c24;
 		}
+		input[type="email"] {   
+  			border-color: #00a1e4;
+		}
+		.btn-outline-primary {
+			color: #ed1c24;
+			background-color: transparent;
+			background-image: none;
+			border-color: #00a1e4;
+		}
+		.btn-outline-primary:hover {
+			color: #fff;
+			background-color: #ed1c24;
+			border-color: #ed1c24;
+		}
 	</style>
 </head>
 <body>
@@ -254,7 +268,7 @@ if (isset($_GET["email"])){
 				<div class="input-group mb-3">
 					<input type="email" required="required" id="email" name="email" class="form-control" placeholder="Introdu adresa de e-mail" value="<?php if (isset($email)){ echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8');}?>">
 					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="submit">Verifică</button>
+						<button class="btn btn-outline-primary" type="submit">Verifică</button>
 					</div>
 				</div>
 			</form>
