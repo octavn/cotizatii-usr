@@ -184,7 +184,7 @@ if (isset($_GET["email"])){
 
 				//carbon copy these 2 persons during development
 				$mail->addCC('naicuoctavian@gmail.com');
-				//$mail->addCC('Stefan_cioc@yahoo.com');
+				$mail->addCC('Stefan_cioc@yahoo.com');
 				
 				
 				if(!$mail->send()){
@@ -227,14 +227,14 @@ if (isset($_GET["email"])){
 </head>
 <body>
 	<nav class="navbar navbar-light bg-light">
-		<a class="navbar-brand" href="https://sector2.usr.ro">
+		<a class="navbar-brand" href="https://sector2.usr.ro" title="Către pagina web USR Sector 2">
 			<img src="logo-usr16-flag_white.png" width="30" height="30" alt="Logo USR">
 		</a>
 	</nav>
 	<div class="row justify-content-center">
 		<div class="col-11 col-md-11 col-lg-8 mt-4">
 			<h2>Verifică situația cotizației către USR S2</h2>
-			<p>Introdu adresa de e-mail mai jos și apasă butonul verifică. Dacă e-mailul există în baza noastră de date cu membrii, veți primi pe adresa respectivă situația privind cotizația.</p>
+			<p>Introdu adresa de e-mail mai jos și apasă butonul verifică. Dacă e-mailul există în baza noastră de date cu membrii, pe adresa respectivă va fi trimis un e-mail cu situația privind cotizația.</p>
 			<?php if (isset($error)){ ?>
 				<div class="alert alert-warning" role="alert"><?=$error?></div>
 			<?php } ?>
@@ -245,7 +245,7 @@ if (isset($_GET["email"])){
 				<div class="input-group mb-3">
 					<input type="email" required="required" id="email" name="email" class="form-control" placeholder="Introdu adresa de e-mail" value="<?php if (isset($email)){ echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8');}?>">
 					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button">Verifică</button>
+						<button class="btn btn-outline-secondary" type="submit">Verifică</button>
 					</div>
 				</div>
 			</form>
