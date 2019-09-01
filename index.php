@@ -243,7 +243,7 @@ if (isset($_GET["email"])){
 					</div>
 					<!--end of col-->
 					<div class="col">
-						<input id="email" name="email" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Introdu adresa de e-mail" value="<?php if (isset($email)){ echo $email;}?>">
+						<input id="email" name="email" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Introdu adresa de e-mail" value="<?php if (isset($email)){ echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8');}?>">
 					</div>
 					<!--end of col-->
 					<div class="col-auto">
