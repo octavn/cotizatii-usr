@@ -179,7 +179,7 @@ if (isset($_GET["email"])){
 				$mail->isHTML(false);
 
 				//Subject of email, tried diacritice, did NOT work!
-				$mail->Subject = "Situatia cotizatiilor catre USR Sector 2";
+				$mail->Subject = "Situatia cotizatiilor catre USR Sector 2 pentru membrul asociat $email";
 				
 				//Body of email
 				$mail->Body = $message;
