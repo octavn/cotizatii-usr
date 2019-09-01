@@ -125,6 +125,9 @@ if (isset($_GET["email"])){
 				//we start with 2016
 				$year=2016;
 
+				//start printing year separators only when we find a cell with contributions, 0 is considered a contribution
+				$startprinting = false;
+
 				//We're going through the list of payments, this relies highly on the sheet not being changed so hold on to something!
 				for ($x = 0; $x < count($rowOfPayments); $x++) {
 
@@ -135,18 +138,24 @@ if (isset($_GET["email"])){
 
 						//print the situation for the current month
 						$message .= $months[(($monthindex)%12)]." ".$year.":".$rowOfPayments[$x]." LEI\n";
+
+						$startprinting=true;
 					}
 
 					if (($monthindex+1)%12==0){
 						//december month, 11 in a 0 index array, add a line and increase the year
 						$year++;
-						$message .= "-----------\n";
+						
+						//we only add the year separator if there's data beforehand and if it's not the last item in the array
+						if ($startprinting && $x<(count($rowOfPayments)-1)){
+							$message .= "-----------\n";
+						}
 						
 					}
 				}
 
 				//Let's end the email body
-				$message .= "\n\nEchipa USR S2\nhttps://sector2.usr.ro";
+				$message .= "\nEchipa USR S2\nhttps://sector2.usr.ro";
 
 				$mail = new PHPMailer;
 
