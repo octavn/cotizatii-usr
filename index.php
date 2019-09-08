@@ -214,8 +214,6 @@ if (isset($_GET["email"])){
 				//To whom to send the email, we could add the name of the  user from the sheet here
 				$mail->addAddress($email);
 
-				//we now unset the email variable so that the input in the HTML page is cleared to prevent users easily re-submitting the form
-				unset($email);
 
 				//carbon copy these 2 persons during development
 				//$mail->addCC('');
