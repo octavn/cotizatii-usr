@@ -10,7 +10,7 @@
 // Apparently these must be at the top of your script, not inside a function
 // PHPMailer is used for sending emails
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;https://youtu.be/iTZyuszEkxI?t=175
+use PHPMailer\PHPMailer\Exception;
 
 /*
 	As per https://stackoverflow.com/questions/25523004/fatal-error-curl-reset-undefined-why the workaround below prevents a fatal error I've had when running this on PHP 5.6
