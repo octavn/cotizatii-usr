@@ -302,11 +302,11 @@ if (isset($_GET["email"])){
 		<div class="col-11 col-md-11 col-lg-8 mt-4">
 			<h2>Verifică situația cotizației către USR S2</h2>
 			<p>Introdu adresa de e-mail mai jos și apasă butonul verifică. Dacă e-mailul există în baza noastră de date cu membrii, pe adresa respectivă va fi trimis un e-mail cu situația privind cotizația.</p>
-			<?php if (isset($error)){ ?>
-				<div class="alert alert-warning" role="alert"><?=$error?></div>
-			<?php } ?>
 			<?php if (isset($success)){ ?>
 				<div class="alert alert-success" role="alert"><?=$success?></div>
+			<?php } ?>
+			<?php if (isset($error)){ ?>
+				<div class="alert alert-warning" role="alert"><?=$error?></div>
 			<?php } ?>
 			<form method="GET">
 				<div class="input-group mb-3">
