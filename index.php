@@ -98,15 +98,22 @@ if (isset($_GET["email"])){
 
 			foreach($values as $row) {
 				//$row[2] is email
-				//$row[1] is nume
+				//$row[1] is nume (DE FAMILIE!!!)
 				//$row[0] is prenume
 				
 				//increase the position as we enter the for loop
 				$position++;
 
-				//echo "{$row[2]} {$row[1]} {$row[0]}" . PHP_EOL;
+				//if this is the e-mail we're hunting for
 				if ($row[2]==$email){
+
+					//lower the defenses
 					$emailisindb=true;
+
+					//full name of the user
+					$full_name = $row[0]. " ".$row[1];
+
+					//no point in going through the rest of the data
 					break;
 				}
 			    
@@ -142,7 +149,7 @@ if (isset($_GET["email"])){
 				$months = array("Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie","Noiembrie","Decembrie");
 
 				//let's begin the email body
-				$message = "Salut, iată situația cotizațiilor către USR Sector 2 așa cum apare ea în baza de date a USR S2:\n\n";
+				$message = "Salut $full_name, \n\niată situația cotizațiilor către USR Sector 2 așa cum apare ea în baza de date a USR S2:\n\n";
 
 				//we start with 2016
 				$year=2016;
@@ -212,8 +219,7 @@ if (isset($_GET["email"])){
 				$mail->Body = $message;
 
 				//To whom to send the email, we could add the name of the  user from the sheet here
-				$mail->addAddress($email);
-
+				$mail->addAddress($email, $full_name);
 
 				//carbon copy these 2 persons during development
 				//$mail->addCC('');
