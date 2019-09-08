@@ -26,14 +26,37 @@ if (!function_exists('curl_reset'))
 }
 
 
+/* 
+	Helper function to log all requests to HDD in a folder
+*/
+
+function log_it($log_msg)
+{
+    $log_folder = "app-logs";
+    if (!file_exists($log_folder)) 
+    {
+        // create directory/folder
+        mkdir($log_folder, 0777, true);
+    }
+    $log_file_data = $log_folder.'/log_' . date('d-M-Y') . '.log';
+    // if you don't add `FILE_APPEND`, the file will be erased each time you add a log
+    file_put_contents($log_file_data, $log_msg . PHP_EOL, FILE_APPEND);
+}
+
+
 if (isset($_GET["email"])){
 	//when the form get submitted we receive an e-mail through GET (GET also allows us to link directly to this script and execute it)
 	$email=$_GET["email"];
 	if (strlen(trim($email))<6){
 		//email length in bytes is too short
 		$error="Ați introdus un e-mail prea scurt, încercați din nou.";
+		//log the attempt
+		log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": email length in bytes was shorter than 6 bytes");
 	}else{
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+			//log the attempt
+			log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": email seems to be valid as per PHP's FILTER_VALIDATE_EMAIL filter");
 
 			//Let's get the party started with some Google APIs 1st
 			require __DIR__ . '/vendor/autoload.php';
@@ -93,6 +116,10 @@ if (isset($_GET["email"])){
 			// $success="S-a declanșat procedura de interogare. Dacă e-mailul dvs e în baza de date, ar trebui să primiți un e-mail cu detaliile privind cotizația în câteva minute.";
 
 			if ($emailisindb){
+
+				//log the attempt
+				log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": email has been found in the spreadsheet, attempting to send the data...");
+
 				// a message that is NOT privacy conscious
 				$success="S-a găsit e-mail la USeReu! În scurt timp o să primiți un e-mail pe adresa $email cu detaliile privind cotizația.";
 
@@ -195,16 +222,32 @@ if (isset($_GET["email"])){
 				    echo "Mailer Error: " . $mail->ErrorInfo;
 				    // a message that is NOT privacy conscious
 					$error="Din păcate e-mailul nu a putut fi trimis. Detalii eroare: $mail->ErrorInfo;";
+
+					//log the attempt
+					log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": the data could not be emailed because: ".$mail->ErrorInfo);
+
 				}else {
 				    //echo "Message has been sent successfully";
+
+					//log the attempt
+					log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": the data has now been emailed.");
 				}
+
+				//we now unset the email variable so that the input in the HTML page is cleared to prevent users easily re-submitting the form
+				unset($email);
 			
 			}else{
 				// a message that is NOT privacy conscious
 				$error="Acest e-mail nu a fost găsit în baza de date. Vă rugăm verificați e-mailul și încercați din nou.";
+
+				//log the attempt
+				log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": email was not found in the spreadsheet");
 			}
 		}else{
 			$error="Nu pare să fi introdus un e-mail, încercați din nou.";
+			
+			//log the attempt
+			log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": email string did not pass PHP's FILTER_VALIDATE_EMAIL filter");
 		}
 	}
 }
