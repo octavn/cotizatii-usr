@@ -132,7 +132,7 @@ if (isset($_GET["email"])){
 					if ($rowOfPayments[$x]!=" - " /*&& $rowOfPayments[$x]!=0*/){
 
 						//print the situation for the current month
-						$message .= $months[(($monthindex)%12)]." ".$year.":".$rowOfPayments[$x]." LEI\n";
+						$message .= $months[(($monthindex)%12)]." ".$year.": ".$rowOfPayments[$x]." LEI\n";
 
 						$startprinting=true;
 					}
@@ -180,15 +180,15 @@ if (isset($_GET["email"])){
 				//Body of email
 				$mail->Body = $message;
 
-				//To whom to send the email
-				//$mail->addAddress($email, "Octavian Naicu");
+				//To whom to send the email, we could add the name of the  user from the sheet here
+				$mail->addAddress($email);
 
-				//we now unset the email variable so that the input in the HTML page is cleared to prevent users repeatedly submitting the form
+				//we now unset the email variable so that the input in the HTML page is cleared to prevent users easily re-submitting the form
 				unset($email);
 
 				//carbon copy these 2 persons during development
-				$mail->addCC('naicuoctavian@gmail.com');
-				$mail->addCC('Stefan_cioc@yahoo.com');
+				//$mail->addCC('');
+				//$mail->addCC('');
 				
 				
 				if(!$mail->send()){
@@ -202,9 +202,7 @@ if (isset($_GET["email"])){
 			}else{
 				// a message that is NOT privacy conscious
 				$error="Acest e-mail nu a fost găsit în baza de date. Vă rugăm verificați e-mailul și încercați din nou.";
-
 			}
-			
 		}else{
 			$error="Nu pare să fi introdus un e-mail, încercați din nou.";
 		}
@@ -270,7 +268,6 @@ if (isset($_GET["email"])){
 		</div>
 		<!--end of col-->
 	</div>
-
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
