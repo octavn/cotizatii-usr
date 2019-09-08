@@ -7,16 +7,15 @@
 
 
 // Import PHPMailer classes into the global namespace
-// These must be at the top of your script, not inside a function
-// These are sued for sending emails if needed
+// Apparently these must be at the top of your script, not inside a function
+// PHPMailer is used for sending emails
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
+use PHPMailer\PHPMailer\Exception;https://youtu.be/iTZyuszEkxI?t=175
 
 /*
 	As per https://stackoverflow.com/questions/25523004/fatal-error-curl-reset-undefined-why the workaround below prevents a fatal error I've had when running this on PHP 5.6
 	PHP Fatal error:  Call to undefined function GuzzleHttp\Handler\curl_reset() in /home/addpipe/public_html/usr-s2/vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php on line 77
- */
+*/
 
 if (!function_exists('curl_reset'))
 {
@@ -28,11 +27,10 @@ if (!function_exists('curl_reset'))
 
 
 if (isset($_GET["email"])){
-
+	//when the form get submitted we receive an e-mail through GET (GET also allows us to link directly to this script and execute it)
 	$email=$_GET["email"];
-
 	if (strlen(trim($email))<6){
-		//email length in bytes too short
+		//email length in bytes is too short
 		$error="Ați introdus un e-mail prea scurt, încercați din nou.";
 	}else{
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -45,15 +43,14 @@ if (isset($_GET["email"])){
 			$client->setScopes(Google_Service_Sheets::SPREADSHEETS);
 			$client->setAccessType('offline');
 
-			//Google Sheets Connector-fc604d687299.json holds the private key needed to authenticate against Google Cloud
-			//See the start of this video to generate such an auth file for your own project https://www.youtube.com/watch?v=iTZyuszEkxI
-			//TODO: the email in the file above needs to be added to the list of emails with read access to the sheet before this app can access the data in that sheet
+			//credentials.json holds the private key needed to authenticate against Google Cloud
+			//See https://youtu.be/iTZyuszEkxI on how to generate such a .json file for your own project
 			$client->setAuthConfig(__DIR__.'/credentials.json');
 
 			// new service yay
 			$service = new Google_Service_Sheets($client);
 
-			// unique Id of your spreadsheet found in URL after the /d/ and before /edit 
+			// unique Id of your spreadsheet found in the spreadsheet URL between the /d/ and /edit 
 			$spreadsheetId='1YB6Il-uHUDLA0YOD3hD1_lqVMtjIHfMIzUeP7HHsiF8'; 
 
 			// range of the cells you want to grab, data in sheet starts at pos 4
@@ -70,7 +67,7 @@ if (isset($_GET["email"])){
 			    die();
 			}
 
-			//we assume the email is not in the db
+			//we assume the email is not in the spreadsheet
 			$emailisindb = false;
 
 			//we start searching with the row 4 of the sheet, so we init $position with 3 and increase it in the loop
@@ -98,8 +95,6 @@ if (isset($_GET["email"])){
 			if ($emailisindb){
 				// a message that is NOT privacy conscious
 				$success="S-a găsit e-mail la USeReu! În scurt timp o să primiți un e-mail pe adresa $email cu detaliile privind cotizația.";
-
-				
 
 				//let's go horizontally and extract all columns related to payments up to and including 2019
 				$paymentRange="Cotizatii!N".$position.":BC".$position;
@@ -157,6 +152,7 @@ if (isset($_GET["email"])){
 				//Let's end the email body
 				$message .= "\nEchipa USR S2\nhttps://sector2.usr.ro";
 
+				//let's power up the email sending machine
 				$mail = new PHPMailer;
 
 				/*
@@ -183,7 +179,6 @@ if (isset($_GET["email"])){
 				
 				//Body of email
 				$mail->Body = $message;
-				
 
 				//To whom to send the email
 				//$mail->addAddress($email, "Octavian Naicu");
