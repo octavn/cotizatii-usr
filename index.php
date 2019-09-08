@@ -182,6 +182,10 @@ if (isset($_GET["email"])){
 				//let's power up the email sending machine
 				$mail = new PHPMailer;
 
+				//and turn on the character encoding wizardry
+				$mail->CharSet = 'UTF-8';
+				$mail->Encoding = 'base64';
+
 				/*
 					//uncomment this block and configure the following to send email with a different SMTP service
 					
