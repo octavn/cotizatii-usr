@@ -205,8 +205,8 @@ if (isset($_GET["email"])){
 				//Send e-mail as plain text
 				$mail->isHTML(false);
 
-				//Subject of email, tried diacritice, did NOT work!
-				$mail->Subject = "Situatia cotizatiilor catre USR Sector 2 pentru membrul asociat $email";
+				//Subject of email includes the actual e-mail address to prevent Gmail stacking such emails in development
+				$mail->Subject = "Situația cotizațiilor către USR Sector 2 pentru membrul cu adresa $email";
 				
 				//Body of email
 				$mail->Body = $message;
