@@ -16,4 +16,4 @@ A single page form and PHP script that checks the monthly contributions situatio
 
 1. Follow the 1st 4 steps above
 2. Upload `composer.json` and `composer.lock` in the same folder
-3. Use composer to create the `vendor` folder and download the needed packages (Google PHP API v4 and PHPMailer)
+3. Use `composer install` from the terminal in the folder to create the `vendor` folder and download the needed packages (Google PHP API v4 and PHPMailer)
