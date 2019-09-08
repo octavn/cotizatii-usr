@@ -119,16 +119,11 @@ if (isset($_GET["email"])){
 			    
 			}
 
-			// a privacy conscious message, we could also tell the user that the email was found but that would allow someone to see if an email is part of this organisation by brute forcing the form
-			// $success="S-a declanșat procedura de interogare. Dacă e-mailul dvs e în baza de date, ar trebui să primiți un e-mail cu detaliile privind cotizația în câteva minute.";
 
 			if ($emailisindb){
 
 				//log the attempt
 				log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": email has been found in the spreadsheet, attempting to send the data...");
-
-				// a message that is NOT privacy conscious
-				$success="S-a găsit e-mail la USeReu! În scurt timp o să primiți un e-mail pe adresa $email cu detaliile privind cotizația.";
 
 				//let's go horizontally and extract all columns related to payments up to and including 2019
 				$paymentRange="Cotizatii!N".$position.":BC".$position;
@@ -228,7 +223,8 @@ if (isset($_GET["email"])){
 				
 				if(!$mail->send()){
 				    echo "Mailer Error: " . $mail->ErrorInfo;
-				    // a message that is NOT privacy conscious
+				    
+				    // a message that is NOT privacy conscious, but only shows up when there's a problem
 					$error="Din păcate e-mailul nu a putut fi trimis. Detalii eroare: $mail->ErrorInfo;";
 
 					//log the attempt
@@ -236,6 +232,12 @@ if (isset($_GET["email"])){
 
 				}else {
 				    //echo "Message has been sent successfully";
+
+				    // a message that is NOT privacy conscious
+					//$success="S-a găsit e-mail la USeReu! În scurt timp o să primiți un e-mail pe adresa $email cu detaliile privind cotizația.";
+
+					//a privacy conscious message, we're shosing the introduced e-mail address to give the user a chance to view any typos
+					$success="Dacă adresa dumneavoastră de e-mail (<strong>$email</strong>) e în baza de date, o să primiți un e-mail cu detaliile privind cotizația în câteva minute.";
 
 					//log the attempt
 					log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": the data has now been emailed.");
@@ -246,7 +248,10 @@ if (isset($_GET["email"])){
 			
 			}else{
 				// a message that is NOT privacy conscious
-				$error="Acest e-mail nu a fost găsit în baza de date. Vă rugăm verificați e-mailul și încercați din nou.";
+				//$error="Acest e-mail nu a fost găsit în baza de date. Vă rugăm verificați e-mailul și încercați din nou.";
+
+				//a privacy conscious message, we're shosing the introduced e-mail address to give the user a chance to view any typos
+				$success="Dacă adresa dumneavoastră de e-mail (<strong>$email</strong>) e în baza de date, o să primiți un e-mail cu detaliile privind cotizația în câteva minute.";
 
 				//log the attempt
 				log_it( "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a")." attempted to request info on ". $email. ": email was not found in the spreadsheet");
